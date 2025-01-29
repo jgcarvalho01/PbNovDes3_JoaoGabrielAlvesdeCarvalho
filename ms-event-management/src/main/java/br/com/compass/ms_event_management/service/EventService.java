@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RequiredArgsConstructor
 @Service
 public class EventService {
@@ -38,5 +41,13 @@ public class EventService {
                     return new EventNotFoundException("Evento não encontrado com ID: " + id);
                 });
         return EventMapper.toDto(event);
+    }
+
+    @Transactional(readOnly = true)
+    public List<EventResponseDto> getAllEvents() {
+        return eventRepository.findAll()
+                .stream()
+                .map(EventMapper::toDto)
+                .collect(Collectors.toList());
     }
 }
