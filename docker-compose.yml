@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo:6.0
+    container_name: mongodb_container
+    ports:
+      - "27017:27017"
+    networks:
+      - spring_network
+    volumes:
+      - mongodb_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_container
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - spring_network
+
+networks:
+  spring_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
