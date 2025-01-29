@@ -1,0 +1,13 @@
+package br.com.compass.ms_event_management;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MsEventManagementApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(MsEventManagementApplication.class, args);
+	}
+
+}
