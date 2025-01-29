@@ -6,10 +6,7 @@ import br.com.compass.ms_event_management.web.dto.EventResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/br/com/compass/eventmanagement/v1")
@@ -24,4 +21,9 @@ public class EventController {
         return ResponseEntity.ok(createdEvent);
     }
 
+    @GetMapping("/get-event/{id}")
+    public ResponseEntity<EventResponseDto> getEventById(@PathVariable String id) {
+        EventResponseDto event = eventService.getEventById(id);
+        return ResponseEntity.ok(event);
+    }
 }

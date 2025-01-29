@@ -1,6 +1,7 @@
 package br.com.compass.ms_event_management.service;
 
 import br.com.compass.ms_event_management.domain.Event;
+import br.com.compass.ms_event_management.exception.EventNotFoundException;
 import br.com.compass.ms_event_management.repository.EventRepository;
 import br.com.compass.ms_event_management.web.dto.EventCreateDto;
 import br.com.compass.ms_event_management.web.dto.EventResponseDto;
@@ -28,5 +29,14 @@ public class EventService {
 
         Event savedEvent = eventRepository.save(event);
         return EventMapper.toDto(savedEvent);
+    }
+
+    @Transactional(readOnly = true)
+    public EventResponseDto getEventById(String id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new EventNotFoundException("Evento não encontrado com ID: " + id);
+                });
+        return EventMapper.toDto(event);
     }
 }
