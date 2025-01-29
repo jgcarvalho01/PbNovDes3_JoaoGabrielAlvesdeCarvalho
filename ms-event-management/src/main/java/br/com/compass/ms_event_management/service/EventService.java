@@ -79,4 +79,13 @@ public class EventService {
         Event updatedEvent = eventRepository.save(event);
         return EventMapper.toDto(updatedEvent);
     }
+
+    @Transactional
+    public void deleteEvent(String id) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new EventNotFoundException("Evento não encontrado com ID: " + id);
+                });
+        eventRepository.deleteById(id);
+    }
 }
