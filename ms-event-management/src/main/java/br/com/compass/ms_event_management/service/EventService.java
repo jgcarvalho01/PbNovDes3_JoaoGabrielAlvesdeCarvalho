@@ -59,4 +59,24 @@ public class EventService {
                 .map(EventMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public EventResponseDto updateEvent(String id, EventCreateDto dto) {
+        Event event = eventRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new EventNotFoundException("Evento não encontrado com ID: " + id);
+                });
+        ViaCepResponse address = viaCepClient.getAddressByCep(dto.getCep());
+
+        event.setEventName(dto.getEventName());
+        event.setDateTime(dto.getDateTime());
+        event.setCep(dto.getCep());
+        event.setLogradouro(address.getLogradouro());
+        event.setBairro(address.getBairro());
+        event.setCidade(address.getLocalidade());
+        event.setUf(address.getUf());
+
+        Event updatedEvent = eventRepository.save(event);
+        return EventMapper.toDto(updatedEvent);
+    }
 }
