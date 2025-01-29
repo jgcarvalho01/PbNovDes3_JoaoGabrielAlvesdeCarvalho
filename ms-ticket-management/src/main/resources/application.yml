@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-ticket-management
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/db_ticket
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+queue:
+  name: ticket-queue
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
