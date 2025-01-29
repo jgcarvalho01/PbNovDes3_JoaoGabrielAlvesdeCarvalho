@@ -8,6 +8,7 @@ import br.com.compass.ms_event_management.web.dto.EventResponseDto;
 import br.com.compass.ms_event_management.web.dto.ViaCepResponse;
 import br.com.compass.ms_event_management.web.dto.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +47,14 @@ public class EventService {
     @Transactional(readOnly = true)
     public List<EventResponseDto> getAllEvents() {
         return eventRepository.findAll()
+                .stream()
+                .map(EventMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<EventResponseDto> getAllEventsSorted() {
+        return eventRepository.findAll(Sort.by(Sort.Direction.ASC, "eventName"))
                 .stream()
                 .map(EventMapper::toDto)
                 .collect(Collectors.toList());
