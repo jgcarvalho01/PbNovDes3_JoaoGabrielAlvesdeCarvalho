@@ -89,4 +89,19 @@ public class TicketService {
                 });
     }
 
+    public Ticket updateTicket(String id, Ticket updatedTicket) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new TicketNotFoundException("Ticket não encontrado com ID: " + id);
+                });
+
+        ticket.setCustomerName(updatedTicket.getCustomerName());
+        ticket.setCpf(updatedTicket.getCpf());
+        ticket.setCustomerMail(updatedTicket.getCustomerMail());
+        ticket.setBrlAmount(updatedTicket.getBrlAmount());
+        ticket.setUsdAmount(updatedTicket.getUsdAmount());
+
+        return ticketRepository.save(ticket);
+    }
+
 }

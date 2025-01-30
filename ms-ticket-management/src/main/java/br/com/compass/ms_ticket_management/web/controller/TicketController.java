@@ -28,4 +28,10 @@ public class TicketController {
         Ticket ticket = ticketService.getTicketById(id);
         return ResponseEntity.ok(ticket);
     }
+
+    @PutMapping("/update-ticket/{id}")
+    public ResponseEntity<Ticket> updateTicket(@PathVariable String id, @RequestBody Ticket updatedTicket) {
+        Ticket ticket = ticketService.updateTicket(id, updatedTicket);
+        return ResponseEntity.ok(ticket);
+    }
 }
