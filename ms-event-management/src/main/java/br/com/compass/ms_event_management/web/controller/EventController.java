@@ -9,11 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @Tag(name = "Event Management", description = "APIs para gerenciar eventos")
 @RestController
 @RequestMapping("/br/com/compass/eventmanagement/v1")
@@ -29,7 +31,9 @@ public class EventController {
     })
     @PostMapping("/create-event")
     public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventCreateDto dto) {
+        log.info("Recebendo requisição para criar um novo evento: {}", dto.toString());
         EventResponseDto createdEvent = eventService.createEvent(dto);
+        log.info("Evento criado com sucesso. ID do evento: {}", createdEvent.getId());
         return ResponseEntity.ok(createdEvent);
     }
 
@@ -40,7 +44,9 @@ public class EventController {
     })
     @GetMapping("/get-event/{id}")
     public ResponseEntity<EventResponseDto> getEventById(@PathVariable String id) {
+        log.info("Recebendo requisição para buscar o evento com ID: {}", id);
         EventResponseDto event = eventService.getEventById(id);
+        log.info("Evento encontrado: {}", event != null ? event.getEventName() : "Não encontrado");
         return ResponseEntity.ok(event);
     }
 
@@ -50,7 +56,9 @@ public class EventController {
     })
     @GetMapping("/get-all-events")
     public ResponseEntity<List<EventResponseDto>> getAllEvents() {
+        log.info("Recebendo requisição para listar todos os eventos");
         List<EventResponseDto> events = eventService.getAllEvents();
+        log.info("Total de eventos encontrados: {}", events.size());
         return ResponseEntity.ok(events);
     }
 
@@ -60,7 +68,9 @@ public class EventController {
     })
     @GetMapping("/get-all-events/sorted")
     public ResponseEntity<List<EventResponseDto>> getAllEventsSorted() {
+        log.info("Recebendo requisição para listar todos os eventos em ordem alfabética");
         List<EventResponseDto> events = eventService.getAllEventsSorted();
+        log.info("Total de eventos encontrados: {}", events.size());
         return ResponseEntity.ok(events);
     }
 
@@ -71,7 +81,9 @@ public class EventController {
     })
     @PutMapping("/update-event/{id}")
     public ResponseEntity<EventResponseDto> updateEvent(@PathVariable String id, @Valid @RequestBody EventCreateDto dto) {
+        log.info("Recebendo requisição para atualizar o evento com ID: {}", id);
         EventResponseDto updatedEvent = eventService.updateEvent(id, dto);
+        log.info("Evento atualizado com sucesso. ID do evento: {}", updatedEvent.getId());
         return ResponseEntity.ok(updatedEvent);
     }
 
@@ -82,7 +94,9 @@ public class EventController {
     })
     @DeleteMapping("/delete-event/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable String id) {
+        log.info("Recebendo requisição para deletar o evento com ID: {}", id);
         eventService.deleteEvent(id);
+        log.info("Evento com ID {} deletado com sucesso.", id);
         return ResponseEntity.noContent().build();
     }
 }
