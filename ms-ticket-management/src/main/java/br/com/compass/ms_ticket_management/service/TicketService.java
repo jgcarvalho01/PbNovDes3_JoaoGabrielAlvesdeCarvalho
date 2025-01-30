@@ -7,10 +7,13 @@ import br.com.compass.ms_ticket_management.web.dto.EventResponse;
 import br.com.compass.ms_ticket_management.web.dto.TicketResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Service
@@ -111,6 +114,14 @@ public class TicketService {
                 });
         ticket.setStatus("Cancelado");
         ticketRepository.save(ticket);
+    }
+
+    public Map<String, Object> checkTicketsByEvent(String eventId) {
+        boolean hasTickets = ticketRepository.existsByEventId(eventId);
+        Map<String, Object> response = new HashMap<>();
+        response.put("eventId", eventId);
+        response.put("hasTickets", hasTickets);
+        return response;
     }
 
 }

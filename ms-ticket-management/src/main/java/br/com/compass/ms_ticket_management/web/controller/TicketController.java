@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/br/com/compass/ticketmanagement/v1")
 @RequiredArgsConstructor
@@ -40,4 +42,11 @@ public class TicketController {
         ticketService.cancelTicket(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/check-tickets-by-event/{eventId}")
+    public ResponseEntity<Map<String, Object>> checkTicketsByEvent(@PathVariable String eventId) {
+        Map<String, Object> response = ticketService.checkTicketsByEvent(eventId);
+        return ResponseEntity.ok(response);
+    }
+
 }
