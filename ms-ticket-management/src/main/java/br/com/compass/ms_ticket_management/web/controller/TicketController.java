@@ -1,0 +1,28 @@
+package br.com.compass.ms_ticket_management.web.controller;
+
+import br.com.compass.ms_ticket_management.domain.Ticket;
+import br.com.compass.ms_ticket_management.repository.TicketRepository;
+import br.com.compass.ms_ticket_management.service.TicketService;
+import br.com.compass.ms_ticket_management.web.dto.TicketResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/br/com/compass/ticketmanagement/v1")
+@RequiredArgsConstructor
+public class TicketController {
+
+    private final TicketService ticketService;
+    private final TicketRepository ticketRepository;
+
+    @PostMapping("/create-ticket")
+    public ResponseEntity<TicketResponse> createTicket(@Valid @RequestBody Ticket ticket) {
+        TicketResponse createdTicket = ticketService.createTicket(ticket);
+        return ResponseEntity.ok(createdTicket);
+    }
+}
