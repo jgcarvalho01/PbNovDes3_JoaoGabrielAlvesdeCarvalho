@@ -7,10 +7,7 @@ import br.com.compass.ms_ticket_management.web.dto.TicketResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/br/com/compass/ticketmanagement/v1")
@@ -24,5 +21,11 @@ public class TicketController {
     public ResponseEntity<TicketResponse> createTicket(@Valid @RequestBody Ticket ticket) {
         TicketResponse createdTicket = ticketService.createTicket(ticket);
         return ResponseEntity.ok(createdTicket);
+    }
+
+    @GetMapping("/get-ticket/{id}")
+    public ResponseEntity<Ticket> getTicketById(@PathVariable String id) {
+        Ticket ticket = ticketService.getTicketById(id);
+        return ResponseEntity.ok(ticket);
     }
 }

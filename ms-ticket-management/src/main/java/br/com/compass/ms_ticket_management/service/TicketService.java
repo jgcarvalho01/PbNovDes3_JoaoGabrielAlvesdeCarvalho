@@ -1,6 +1,7 @@
 package br.com.compass.ms_ticket_management.service;
 
 import br.com.compass.ms_ticket_management.domain.Ticket;
+import br.com.compass.ms_ticket_management.exception.TicketNotFoundException;
 import br.com.compass.ms_ticket_management.repository.TicketRepository;
 import br.com.compass.ms_ticket_management.web.dto.EventResponse;
 import br.com.compass.ms_ticket_management.web.dto.TicketResponse;
@@ -79,6 +80,13 @@ public class TicketService {
                 brlAmount,
                 usdAmount
         );
+    }
+
+    public Ticket getTicketById(String id) {
+        return ticketRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new TicketNotFoundException("Ticket não encontrado com ID: " + id);
+                });
     }
 
 }
