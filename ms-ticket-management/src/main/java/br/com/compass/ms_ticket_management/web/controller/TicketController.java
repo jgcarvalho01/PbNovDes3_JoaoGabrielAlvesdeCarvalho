@@ -34,4 +34,10 @@ public class TicketController {
         Ticket ticket = ticketService.updateTicket(id, updatedTicket);
         return ResponseEntity.ok(ticket);
     }
+
+    @DeleteMapping("/cancel-ticket/{id}")
+    public ResponseEntity<Void> cancelTicket(@PathVariable String id) {
+        ticketService.cancelTicket(id);
+        return ResponseEntity.noContent().build();
+    }
 }

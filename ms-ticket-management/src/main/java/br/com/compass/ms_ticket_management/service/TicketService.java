@@ -104,4 +104,13 @@ public class TicketService {
         return ticketRepository.save(ticket);
     }
 
+    public void cancelTicket(String id) {
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> {
+                    return new TicketNotFoundException("Ticket não encontrado com ID: " + id);
+                });
+        ticket.setStatus("Cancelado");
+        ticketRepository.save(ticket);
+    }
+
 }
