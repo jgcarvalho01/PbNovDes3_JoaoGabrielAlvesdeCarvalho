@@ -1,7 +1,6 @@
 package br.com.compass.ms_ticket_management.web.controller;
 
 import br.com.compass.ms_ticket_management.domain.Ticket;
-import br.com.compass.ms_ticket_management.repository.TicketRepository;
 import br.com.compass.ms_ticket_management.service.TicketService;
 import br.com.compass.ms_ticket_management.web.dto.TicketResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,11 +9,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
+@Slf4j
 @Tag(name = "Ticket Management", description = "APIs para gerenciar ingressos")
 @RestController
 @RequestMapping("/br/com/compass/ticketmanagement/v1")
@@ -22,7 +23,6 @@ import java.util.Map;
 public class TicketController {
 
     private final TicketService ticketService;
-    private final TicketRepository ticketRepository;
 
     @Operation(summary = "Criar um novo ingresso", description = "Cria um ingresso com base no evento fornecido.")
     @ApiResponses(value = {
@@ -32,7 +32,9 @@ public class TicketController {
     })
     @PostMapping("/create-ticket")
     public ResponseEntity<TicketResponse> createTicket(@Valid @RequestBody Ticket ticket) {
+        log.info("Recebendo requisição para criar um novo ticket para o evento: {}", ticket.getEventId());
         TicketResponse createdTicket = ticketService.createTicket(ticket);
+        log.info("Ticket criado com sucesso. ID do ticket: {}", createdTicket.getTicketId());
         return ResponseEntity.ok(createdTicket);
     }
 
@@ -43,7 +45,9 @@ public class TicketController {
     })
     @GetMapping("/get-ticket/{id}")
     public ResponseEntity<Ticket> getTicketById(@PathVariable String id) {
+        log.info("Recebendo requisição para buscar o ticket com ID: {}", id);
         Ticket ticket = ticketService.getTicketById(id);
+        log.info("Ticket encontrado: {}", ticket.getTicketId());
         return ResponseEntity.ok(ticket);
     }
 
@@ -54,7 +58,9 @@ public class TicketController {
     })
     @PutMapping("/update-ticket/{id}")
     public ResponseEntity<Ticket> updateTicket(@PathVariable String id, @RequestBody Ticket updatedTicket) {
+        log.info("Recebendo requisição para atualizar o ticket com ID: {}", id);
         Ticket ticket = ticketService.updateTicket(id, updatedTicket);
+        log.info("Ticket atualizado com sucesso. ID do ticket: {}", ticket.getTicketId());
         return ResponseEntity.ok(ticket);
     }
 
@@ -65,7 +71,9 @@ public class TicketController {
     })
     @DeleteMapping("/cancel-ticket/{id}")
     public ResponseEntity<Void> cancelTicket(@PathVariable String id) {
+        log.info("Recebendo requisição para cancelar o ticket com ID: {}", id);
         ticketService.cancelTicket(id);
+        log.info("Ticket com ID {} cancelado com sucesso.", id);
         return ResponseEntity.noContent().build();
     }
 
@@ -75,7 +83,9 @@ public class TicketController {
     })
     @GetMapping("/check-tickets-by-event/{eventId}")
     public ResponseEntity<Map<String, Object>> checkTicketsByEvent(@PathVariable String eventId) {
+        log.info("Recebendo requisição para verificar tickets vinculados ao evento com ID: {}", eventId);
         Map<String, Object> response = ticketService.checkTicketsByEvent(eventId);
+        log.info("Verificação concluída para o evento: {}.", eventId);
         return ResponseEntity.ok(response);
     }
 
