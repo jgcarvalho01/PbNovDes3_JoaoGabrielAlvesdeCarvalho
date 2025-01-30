@@ -77,7 +77,8 @@ public class EventController {
     @Operation(summary = "Atualizar um evento", description = "Atualiza as informações de um evento pelo ID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Evento atualizado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Evento não encontrado")
+            @ApiResponse(responseCode = "404", description = "Evento não encontrado"),
+            @ApiResponse(responseCode = "409", description = "Conflito ao atualizar o evento, devido a ingressos vinculados")
     })
     @PutMapping("/update-event/{id}")
     public ResponseEntity<EventResponseDto> updateEvent(@PathVariable String id, @Valid @RequestBody EventCreateDto dto) {
@@ -90,7 +91,8 @@ public class EventController {
     @Operation(summary = "Deletar um evento", description = "Deleta um evento pelo ID. A operação será bloqueada se houver ingressos vinculados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Evento deletado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Evento não encontrado")
+            @ApiResponse(responseCode = "404", description = "Evento não encontrado"),
+            @ApiResponse(responseCode = "409", description = "Conflito ao deletar o evento, devido a ingressos vinculados")
     })
     @DeleteMapping("/delete-event/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable String id) {
