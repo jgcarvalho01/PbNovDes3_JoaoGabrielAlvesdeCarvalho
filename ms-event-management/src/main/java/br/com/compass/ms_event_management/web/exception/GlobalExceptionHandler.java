@@ -1,5 +1,7 @@
 package br.com.compass.ms_event_management.web.exception;
 
+import br.com.compass.ms_event_management.exception.EventCannotBeDeletedException;
+import br.com.compass.ms_event_management.exception.EventCannotBeUpdateException;
 import br.com.compass.ms_event_management.exception.EventNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,5 +25,19 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(EventCannotBeDeletedException.class)
+    public ResponseEntity<Map<String, String>> handleEventCannotBeDeletedException(EventCannotBeDeletedException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(EventCannotBeUpdateException.class)
+    public ResponseEntity<Map<String, String>> handleEventCannotBeUpdateException(EventCannotBeUpdateException ex) {
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 }

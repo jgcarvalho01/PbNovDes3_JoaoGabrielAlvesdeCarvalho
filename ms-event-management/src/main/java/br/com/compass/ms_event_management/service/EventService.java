@@ -1,6 +1,8 @@
 package br.com.compass.ms_event_management.service;
 
 import br.com.compass.ms_event_management.domain.Event;
+import br.com.compass.ms_event_management.exception.EventCannotBeDeletedException;
+import br.com.compass.ms_event_management.exception.EventCannotBeUpdateException;
 import br.com.compass.ms_event_management.exception.EventNotFoundException;
 import br.com.compass.ms_event_management.repository.EventRepository;
 import br.com.compass.ms_event_management.web.dto.EventCreateDto;
@@ -9,10 +11,12 @@ import br.com.compass.ms_event_management.web.dto.ViaCepResponse;
 import br.com.compass.ms_event_management.web.dto.mapper.EventMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
     private final ViaCepClient viaCepClient;
+    private final TicketClient ticketClient;
 
     @Transactional
     public EventResponseDto createEvent(EventCreateDto dto) {
@@ -76,6 +81,14 @@ public class EventService {
         event.setCidade(address.getLocalidade());
         event.setUf(address.getUf());
 
+        Map<String, Object> ticketResponse = ticketClient.checkTicketsByEvent(id);
+        boolean hasTickets = (boolean) ticketResponse.get("hasTickets");
+
+        if (hasTickets) {
+            throw new EventCannotBeUpdateException("O evento não pode ser atualizado porque possui ingressos vendidos.");
+        }
+
+
         Event updatedEvent = eventRepository.save(event);
         return EventMapper.toDto(updatedEvent);
     }
@@ -86,6 +99,14 @@ public class EventService {
                 .orElseThrow(() -> {
                     return new EventNotFoundException("Evento não encontrado com ID: " + id);
                 });
+
+        Map<String, Object> ticketResponse = ticketClient.checkTicketsByEvent(id);
+        boolean hasTickets = (boolean) ticketResponse.get("hasTickets");
+
+        if (hasTickets) {
+            throw new EventCannotBeDeletedException("O evento não pode ser deletado porque possui ingressos vendidos.");
+        }
+
         eventRepository.deleteById(id);
     }
 }
