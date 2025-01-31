@@ -1,10 +1,14 @@
 version: '3.8'
+
 services:
   mongodb:
     image: mongo:6.0
     container_name: mongodb_container
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
     networks:
       - spring_network
     volumes:
@@ -19,6 +23,36 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - spring_network
+
+  ms-event-management:
+    build: ./ms-event-management
+    container_name: ms_event_management
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - TICKETMANAGEMENT_HOST=http://ms-ticket-management
+      - TICKETMANAGEMENT_PORT=8081
+    networks:
+      - spring_network
+
+  ms-ticket-management:
+    build: ./ms-ticket-management
+    container_name: ms_ticket_management
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+      - rabbitmq
+      - ms-event-management
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - EVENTMANAGEMENT_HOST=http://ms-event-management
+      - EVENTMANAGEMENT_PORT=8080
     networks:
       - spring_network
 
