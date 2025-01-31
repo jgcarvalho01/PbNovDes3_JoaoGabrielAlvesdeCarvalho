@@ -33,6 +33,7 @@ services:
       - "8080:8080"
     depends_on:
       - mongodb
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - TICKETMANAGEMENT_HOST=http://ms-ticket-management
@@ -49,6 +50,7 @@ services:
       - mongodb
       - rabbitmq
       - ms-event-management
+    restart: always
     environment:
       - SPRING_PROFILES_ACTIVE=prod
       - EVENTMANAGEMENT_HOST=http://ms-event-management
