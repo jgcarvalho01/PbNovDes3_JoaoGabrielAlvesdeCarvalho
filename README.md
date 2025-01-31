@@ -241,8 +241,8 @@ Aproveite o show e não esqueça de contar pros amigos! 🤩
 
 Agora acesse:
 
--   `http://SEU_IP_PUBLICO:8080/swagger-ui.html`
--   `http://SEU_IP_PUBLICO:8081/swagger-ui.html`
+-   `http://18.116.68.240:8080/swagger-ui.html`
+-   `http://18.116.68.240:8081/swagger-ui.html`
 
 ----------
 
