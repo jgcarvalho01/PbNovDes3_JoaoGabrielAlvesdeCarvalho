@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Map;
 
-@FeignClient(name = "ms-ticket-management", url = "http://localhost:8081/br/com/compass/ticketmanagement/v1")
+@FeignClient(name = "ms-ticket-management", url = "${ticket-management.url}")
 public interface TicketClient {
     @GetMapping("/check-tickets-by-event/{eventId}")
     Map<String, Object> checkTicketsByEvent(@PathVariable("eventId") String eventId);
