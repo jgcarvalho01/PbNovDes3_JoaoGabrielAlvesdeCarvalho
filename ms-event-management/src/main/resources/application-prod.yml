@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-event-management
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@mongodb_container:27017/db_event?authSource=admin
+
+ticket-management:
+  url: http://ms-ticket-management:8081/br/com/compass/ticketmanagement/v1
+
+springdoc:
+  api-docs:
+    path: /event-docs
+  swagger-ui:
+    path: /swagger-ui.html

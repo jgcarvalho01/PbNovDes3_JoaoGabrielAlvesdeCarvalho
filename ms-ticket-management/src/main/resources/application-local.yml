@@ -1,0 +1,24 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-ticket-management
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@localhost:27017/db_ticket?authSource=admin
+
+event-management:
+  url: http://localhost:8080/br/com/compass/eventmanagement/v1
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+
+springdoc:
+  api-docs:
+    path: /ticket-docs
+  swagger-ui:
+    path: /swagger-ui.html

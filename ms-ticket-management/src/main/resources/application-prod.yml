@@ -1,0 +1,26 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ms-ticket-management
+  data:
+    mongodb:
+      uri: mongodb://admin:admin@mongodb_container:27017/db_ticket?authSource=admin
+  rabbitmq:
+    host: rabbitmq_container
+    port: 5672
+    username: guest
+    password: guest
+
+queue:
+  name: ticket-queue
+
+event-management:
+  url: http://ms-event-management:8080/br/com/compass/eventmanagement/v1
+
+springdoc:
+  api-docs:
+    path: /ticket-docs
+  swagger-ui:
+    path: /swagger-ui.html
